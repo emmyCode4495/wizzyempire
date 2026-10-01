@@ -1,16 +1,15 @@
-import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Oswald, Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CartDrawer } from "@/components/cart-drawer";
 
-const fraunces = Fraunces({
+const oswald = Oswald({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const inter = Inter({
@@ -20,10 +19,19 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "LUME — Considered clothing",
+  title: "Wizzy Empire — Modern Clothing Brand",
   description:
-    "LUME is a marketplace for clothing built to last: outerwear, knitwear, denim, footwear and accessories, made from materials worth keeping.",
+    "Wizzy Empire is a modern clothing brand for outerwear, knitwear, denim, footwear and accessories — built to last and made to stand out.",
 };
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: "#FBFAF8",
+};
+
 
 export default function RootLayout({
   children,
@@ -31,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable}`}>
+    <html lang="en" className={`${oswald.variable} ${inter.variable}`}>
       <body className="font-sans">
         <Providers>
           <SiteHeader />

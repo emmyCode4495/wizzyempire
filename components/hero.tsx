@@ -4,19 +4,20 @@ import { Button } from "@/components/ui/button";
 
 export function Hero() {
   return (
-    <section className="container-page grid gap-8 pb-16 pt-10 md:grid-cols-2 md:items-center md:pt-16">
+    <section className="container-page grid items-center gap-6 pb-12 pt-4 md:grid-cols-2 md:gap-10 md:pb-16 md:pt-8">
       <div className="order-2 md:order-1">
-        <p className="mb-4 text-sm text-ink-400">Autumn/Winter collection</p>
-        <h1 className="font-display text-[13vw] leading-[0.95] tracking-tightest sm:text-6xl md:text-7xl">
+        <p className="mb-3 text-sm text-ink-400">Autumn/Winter collection</p>
+        <h1 className="font-display text-4xl leading-[1.05] tracking-tightest sm:text-5xl md:text-6xl lg:text-7xl">
           Clothes built to
           <br />
-          <span className="italic">outlast</span> the season.
+          <span className="font-semibold tracking-tight">outlast</span> the
+          season.
         </h1>
-        <p className="mt-6 max-w-md text-ink-600">
+        <p className="mt-4 max-w-md text-base text-ink-600 sm:text-lg">
           Small-batch outerwear, knitwear and denim made from materials worth
           keeping, sold directly to you without the markup of a middleman.
         </p>
-        <div className="mt-8 flex gap-3">
+        <div className="mt-6 flex flex-wrap gap-3">
           <Link href="/shop">
             <Button size="lg">Shop the collection</Button>
           </Link>
@@ -27,14 +28,15 @@ export function Hero() {
           </Link>
         </div>
       </div>
-      <div className="relative order-1 aspect-[4/5] overflow-hidden bg-ink-50 md:order-2">
+
+      <div className="order-1 flex w-full justify-center md:order-2 md:justify-end">
         <Image
-          src="https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=1200"
-          alt="Model wearing a wool overcoat from the LUME autumn/winter collection"
-          fill
+          src="/hero.jpeg"
+          alt="Model wearing a wool overcoat from the Wizzy Empire autumn/winter collection"
+          width={900}
+          height={1125}
           priority
-          sizes="(min-width: 768px) 50vw, 100vw"
-          className="object-cover"
+          className="h-auto w-full max-w-md object-contain sm:max-w-lg md:max-w-none md:w-full"
         />
       </div>
     </section>

@@ -1,14 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/proxy";
 
-// Next.js 16 renamed `middleware.ts` to `proxy.ts` and runs it on the
-// Node.js runtime by default (it previously defaulted to the Edge runtime).
-// The request/response APIs are unchanged — only the file name and the
-// exported function name (`proxy` instead of `middleware`).
 export async function proxy(request: NextRequest) {
   const response = await updateSession(request);
 
-  const protectedPaths = ["/account", "/checkout"];
+  const protectedPaths = ["/account", "/checkout", "/admin"];
   const isProtected = protectedPaths.some((p) =>
     request.nextUrl.pathname.startsWith(p)
   );

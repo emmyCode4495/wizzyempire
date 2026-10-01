@@ -58,11 +58,17 @@ const config: Config = {
           "0%": { transform: "translateX(100%)" },
           "100%": { transform: "translateX(0)" },
         },
+        "drawer-in-left": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(0)" },
+        },
       },
       animation: {
         "slide-up": "slide-up 0.5s cubic-bezier(0.16,1,0.3,1) both",
         "fade-in": "fade-in 0.4s ease both",
         "drawer-in": "drawer-in 0.35s cubic-bezier(0.16,1,0.3,1) both",
+        "drawer-in-left":
+  "drawer-in-left 0.32s cubic-bezier(0.16,1,0.3,1) both",
       },
     },
   },

@@ -1,59 +1,99 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import Image from "next/image";
+import { Menu, X, ShoppingBag, User } from "lucide-react";
 import type { Category } from "@/lib/types";
 
-export function MobileNav({ categories }: { categories: Category[] }) {
-  const [open, setOpen] = useState(false);
+export function MobileNavTrigger() {
+  return (
+    <label
+      htmlFor="we-nav-toggle"
+      className="mobile-menu-btn"
+      aria-label="Open menu"
+    >
+      <Menu size={22} strokeWidth={2.25} aria-hidden="true" />
+    </label>
+  );
+}
+
+export function MobileNavDrawer({ categories }: { categories: Category[] }) {
+  const list = categories ?? [];
 
   return (
-    <div className="md:hidden">
-      <button
-        aria-label="Open menu"
-        onClick={() => setOpen(true)}
-        className="focus-ring flex h-9 w-9 items-center justify-center"
-      >
-        <Menu className="h-5 w-5" strokeWidth={1.5} />
-      </button>
+    <>
+      <input
+        type="checkbox"
+        id="we-nav-toggle"
+        className="we-nav-toggle"
+        aria-hidden="true"
+      />
 
-      {open && (
-        <div className="fixed inset-0 z-50 flex">
-          <div
-            className="absolute inset-0 bg-ink/40 animate-fade-in"
-            onClick={() => setOpen(false)}
-          />
-          <div className="relative ml-auto flex h-full w-[80%] max-w-xs animate-drawer-in flex-col bg-paper px-6 py-6">
-            <button
-              aria-label="Close menu"
-              onClick={() => setOpen(false)}
-              className="focus-ring ml-auto flex h-9 w-9 items-center justify-center"
-            >
-              <X className="h-5 w-5" />
-            </button>
-            <nav className="mt-8 flex flex-col gap-1">
-              <Link
-                href="/shop"
-                onClick={() => setOpen(false)}
-                className="border-b border-ink/10 py-3 font-display text-xl"
-              >
-                All products
-              </Link>
-              {categories.map((c) => (
-                <Link
-                  key={c.id}
-                  href={`/category/${c.slug}`}
-                  onClick={() => setOpen(false)}
-                  className="border-b border-ink/10 py-3 font-display text-xl"
-                >
-                  {c.name}
-                </Link>
-              ))}
-            </nav>
-          </div>
+      <label
+        htmlFor="we-nav-toggle"
+        className="we-nav-backdrop"
+        aria-label="Close menu"
+      />
+
+      <div className="we-nav-panel" role="dialog" aria-label="Navigation menu">
+        <div className="we-nav-panel-header">
+          <Link href="/" className="we-nav-brand">
+            <Image
+              src="/logo.png"
+              alt=""
+              width={32}
+              height={32}
+              className="we-nav-logo"
+            />
+            <span className="we-nav-brand-text-wrap">
+              <span className="we-nav-brand-text">Wizzy Empire</span>
+              <span className="we-nav-brand-slogan">Home of luxury</span>
+            </span>
+          </Link>
+          <label
+            htmlFor="we-nav-toggle"
+            className="nav-icon-btn"
+            aria-label="Close menu"
+          >
+            <X size={22} strokeWidth={2} aria-hidden="true" />
+          </label>
         </div>
-      )}
-    </div>
+
+        <div className="we-nav-body">
+          <p className="we-nav-section-label">Shop</p>
+          <Link href="/shop" className="we-nav-link we-nav-link-strong">
+            All products
+          </Link>
+          {list.map((c) => (
+            <Link
+              key={c.id}
+              href={`/category/${c.slug}`}
+              className="we-nav-link"
+            >
+              {c.name}
+            </Link>
+          ))}
+
+          <div className="we-nav-divider" />
+
+          <p className="we-nav-section-label">Account</p>
+          <Link href="/account" className="we-nav-link we-nav-link-row">
+            <User size={16} strokeWidth={1.75} aria-hidden="true" />
+            My account
+          </Link>
+          <Link href="/account/orders" className="we-nav-link we-nav-link-row">
+            <ShoppingBag size={16} strokeWidth={1.75} aria-hidden="true" />
+            Orders
+          </Link>
+          <Link href="/login" className="we-nav-link we-nav-link-muted">
+            Log in / Sign up
+          </Link>
+        </div>
+
+        <div className="we-nav-footer">
+          <Link href="/shop" className="we-nav-cta">
+            Shop the collection
+          </Link>
+        </div>
+      </div>
+    </>
   );
 }

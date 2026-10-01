@@ -88,7 +88,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
       <p className="text-center text-sm text-ink-400">
         {mode === "login" ? (
           <>
-            New to LUME?{" "}
+            New User?{" "}
             <Link href="/signup" className="text-ink underline">
               Create an account
             </Link>
