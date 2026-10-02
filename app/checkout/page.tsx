@@ -151,8 +151,7 @@ export default function CheckoutPage() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <Input
-              label="Postal code"
-              required
+              label="Postal code (optional)"
               value={address.postal_code}
               onChange={(e) => update("postal_code", e.target.value)}
             />
@@ -222,7 +221,7 @@ export default function CheckoutPage() {
           disabled={placing}
           className="mt-6 w-full"
         >
-          {placing ? "Opening WhatsApp…" : `Order via WhatsApp · ${formatPrice(total)}`}
+          {placing ? "Opening WhatsApp…" : `Order · ${formatPrice(total)}`}
         </Button>
       </aside>
     </div>
