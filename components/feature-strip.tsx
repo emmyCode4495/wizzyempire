@@ -1,7 +1,7 @@
 import { Truck, RotateCcw, Leaf, ShieldCheck } from "lucide-react";
 
 const features = [
-  { icon: Truck, title: "Free shipping", detail: "On orders over $150" },
+  { icon: Truck, title: "Free shipping", detail: "On orders over ₦150,000" },
   { icon: RotateCcw, title: "30-day returns", detail: "No questions asked" },
   { icon: Leaf, title: "Responsible materials", detail: "Traceable fibers" },
   { icon: ShieldCheck, title: "Secure checkout", detail: "Encrypted payments" },

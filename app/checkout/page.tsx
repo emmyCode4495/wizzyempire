@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "sonner";
 import { useCartStore } from "@/lib/cart-store";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, shippingCost } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/empty-state";
@@ -67,7 +67,7 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState<ShippingAddress>(emptyAddress);
   const [placing, setPlacing] = useState(false);
 
-  const shipping = subtotal >= 150 ? 0 : 9.95;
+  const shipping = shippingCost(subtotal);
   const total = subtotal + shipping;
 
   function update<K extends keyof ShippingAddress>(key: K, value: string) {
@@ -93,7 +93,6 @@ export default function CheckoutPage() {
     );
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
-    // Open WhatsApp (new tab on desktop; same window on many mobile browsers)
     window.open(url, "_blank", "noopener,noreferrer");
 
     clear();

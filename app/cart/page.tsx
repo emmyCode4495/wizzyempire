@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCartStore } from "@/lib/cart-store";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, shippingCost } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { QuantityStepper } from "@/components/quantity-stepper";
 import { EmptyState } from "@/components/empty-state";
@@ -93,14 +93,16 @@ export default function CartPage() {
           </div>
           <div className="flex justify-between">
             <span className="text-ink-600">Shipping</span>
-            <span>{subtotal >= 150 ? "Free" : formatPrice(9.95)}</span>
+            <span>
+              {shippingCost(subtotal) === 0
+                ? "Free"
+                : formatPrice(shippingCost(subtotal))}
+            </span>
           </div>
         </div>
         <div className="mt-4 flex justify-between border-t border-ink/10 pt-4 font-medium">
           <span>Total</span>
-          <span>
-            {formatPrice(subtotal + (subtotal >= 150 ? 0 : 9.95))}
-          </span>
+          <span>{formatPrice(subtotal + shippingCost(subtotal))}</span>
         </div>
         <Link href="/checkout">
           <Button size="lg" className="mt-6 w-full">

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { shippingCost } from "@/lib/utils";
 import type { CartLine, ShippingAddress } from "@/lib/types";
 
 export async function POST(request: Request) {
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
     (sum, l) => sum + l.price * l.quantity,
     0
   );
-  const shipping = subtotal >= 150 ? 0 : 9.95;
+  const shipping = shippingCost(subtotal);
   const total = Number((subtotal + shipping).toFixed(2));
 
   const { data: order, error: orderError } = await supabase
@@ -65,7 +66,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: itemsError.message }, { status: 500 });
   }
 
-  // Clear the saved server-side cart now that the order has been placed.
   await supabase.from("cart_items").delete().eq("user_id", user.id);
 
   return NextResponse.json({ orderId: orderRow.id });
