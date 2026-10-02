@@ -1,10 +1,26 @@
-import { Truck, RotateCcw, Leaf, ShieldCheck } from "lucide-react";
+import { Sparkles, Shirt, HeartHandshake, BadgeCheck } from "lucide-react";
 
 const features = [
-  { icon: Truck, title: "Free shipping", detail: "On orders over ₦150,000" },
-  { icon: RotateCcw, title: "30-day returns", detail: "No questions asked" },
-  { icon: Leaf, title: "Responsible materials", detail: "Traceable fibers" },
-  { icon: ShieldCheck, title: "Secure checkout", detail: "Encrypted payments" },
+  {
+    icon: Shirt,
+    title: "Quality materials",
+    detail: "Premium fabrics chosen to last season after season",
+  },
+  {
+    icon: Sparkles,
+    title: "Curated styles",
+    detail: "Every piece selected for fit, finish, and everyday wear",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Personal service",
+    detail: "Order via WhatsApp — we guide you through every step",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Excellent experience",
+    detail: "Smooth shopping from browse to delivery, every time",
+  },
 ];
 
 export function FeatureStrip() {
