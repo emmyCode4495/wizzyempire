@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/empty-state";
 import Link from "next/link";
-import type { ShippingAddress } from "@/lib/types";
+import type { CartLine, ShippingAddress } from "@/lib/types";
 
 const emptyAddress: ShippingAddress = {
   full_name: "",
@@ -21,6 +21,42 @@ const emptyAddress: ShippingAddress = {
   country: "",
   phone: "",
 };
+
+/** Owner WhatsApp number (digits only, with country code). Override via env. */
+const WHATSAPP_NUMBER =
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "") || "2348000000000";
+
+function buildWhatsAppMessage(
+  lines: CartLine[],
+  address: ShippingAddress,
+  subtotal: number,
+  shipping: number,
+  total: number
+) {
+  const itemLines = lines
+    .map(
+      (l, i) =>
+        `${i + 1}. ${l.name}\n` +
+        `   Size: ${l.size} · Color: ${l.color}\n` +
+        `   Qty: ${l.quantity} × ${formatPrice(l.price)} = ${formatPrice(l.price * l.quantity)}`
+    )
+    .join("\n\n");
+
+  return (
+    `*New order — ${process.env.NEXT_PUBLIC_SITE_NAME || "Wizzy Empire"}*\n\n` +
+    `*Customer*\n` +
+    `Name: ${address.full_name}\n` +
+    `Phone: ${address.phone}\n` +
+    `Address: ${address.address_line}\n` +
+    `${address.city}, ${address.state} ${address.postal_code}\n` +
+    `${address.country}\n\n` +
+    `*Items*\n${itemLines}\n\n` +
+    `Subtotal: ${formatPrice(subtotal)}\n` +
+    `Shipping: ${shipping === 0 ? "Free" : formatPrice(shipping)}\n` +
+    `*Total: ${formatPrice(total)}*\n\n` +
+    `Please confirm availability and payment details. Thank you!`
+  );
+}
 
 export default function CheckoutPage() {
   const lines = useCartStore((s) => s.lines);
@@ -38,27 +74,32 @@ export default function CheckoutPage() {
     setAddress((a) => ({ ...a, [key]: value }));
   }
 
-  async function placeOrder(e: React.FormEvent) {
+  function placeOrder(e: React.FormEvent) {
     e.preventDefault();
-    setPlacing(true);
-    try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lines, shippingAddress: address }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        toast.error(data.error ?? "Could not place order");
-        setPlacing(false);
-        return;
-      }
-      clear();
-      router.push(`/checkout/success?order=${data.orderId}`);
-    } catch {
-      toast.error("Something went wrong. Please try again.");
-      setPlacing(false);
+
+    if (!lines.length) {
+      toast.error("Your bag is empty");
+      return;
     }
+
+    setPlacing(true);
+
+    const message = buildWhatsAppMessage(
+      lines,
+      address,
+      subtotal,
+      shipping,
+      total
+    );
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+    // Open WhatsApp (new tab on desktop; same window on many mobile browsers)
+    window.open(url, "_blank", "noopener,noreferrer");
+
+    clear();
+    toast.success("Opening WhatsApp to complete your order…");
+    router.push("/checkout/success");
+    setPlacing(false);
   }
 
   if (lines.length === 0) {
@@ -133,9 +174,9 @@ export default function CheckoutPage() {
           <div className="mt-4 border-t border-ink/10 pt-4">
             <h2 className="mb-2 text-sm font-medium">Payment</h2>
             <p className="text-xs text-ink-400">
-              This is a demo store — no real payment is collected. In
-              production, swap this section for a Stripe (or similar)
-              payment element and confirm it before creating the order.
+              No online payment yet. After you confirm, you&apos;ll be taken to
+              WhatsApp with your full order details so the store can arrange
+              payment and delivery with you.
             </p>
           </div>
         </form>
@@ -182,7 +223,7 @@ export default function CheckoutPage() {
           disabled={placing}
           className="mt-6 w-full"
         >
-          {placing ? "Placing order…" : `Pay ${formatPrice(total)}`}
+          {placing ? "Opening WhatsApp…" : `Order via WhatsApp · ${formatPrice(total)}`}
         </Button>
       </aside>
     </div>
